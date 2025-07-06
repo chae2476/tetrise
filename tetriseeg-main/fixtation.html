@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="trackPlayerInputs.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixtation</title>
+    <style>
+        /* Reset some default styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Flexbox styles to center content */
+        body {
+            display: flex;
+            justify-content: center;  /* Center horizontally */
+            margin-top: 300px;
+            height: 100vh;            /* Full viewport height */
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="center-content">
+        <img src="resources/fix.png" width="150" height="150" alt="Fixation Cross">
+    </div>
+
+<script>
+        // Get the current page URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Retrieve the fairness, score, lines, reward, and loopCount values
+        
+        const score = urlParams.get('score');
+        const lines = urlParams.get('lines');
+        const loopCount = urlParams.get('loopCount');  // Added this line to retrieve loopCount
+
+        // Redirect based on fairness after 3 seconds
+        //setTimeout(() => {
+            //if (fairness === 'fair') {
+                // Redirect to the fair algorithm page
+                //window.location.href = `rewardAlgorithm_fair.html?loopCount=${loopCount}&score=${score}&lines=${lines}`;
+            //} else {
+                // Redirect to the unfair algorithm page
+                //window.location.href = `rewardAlgorithm_unfair.html?loopCount=${loopCount}&score=${score}&lines=${lines}`;
+           // }
+       // }, 3000); // Redirect after 3 seconds (you can adjust this time)
+
+
+
+       //setTimeout(() => {
+    // Array of possible URLs to redirect to
+    //const redirectUrls = [
+        //`rewardAlgorithm_fair.html?loopCount=${loopCount}&score=${score}&lines=${lines}`,
+        //`rewardAlgorithm_unfair.html?loopCount=${loopCount}&score=${score}&lines=${lines}` // Add more pages if needed
+    //];
+
+    // Select a random index from the array
+    //const randomIndex = Math.floor(Math.random() * redirectUrls.length);
+
+    // Redirect to the randomly selected URL
+    //window.location.href = redirectUrls[randomIndex];
+//}, 3000); // Redirect after 3 seconds (you can adjust this time)
+
+
+
+// Define a sequence of URLs you want to redirect to
+const redirectUrls = [
+    "rewardAlgorithm_unfair.html",  // 1st iteration (will be ignored)
+    "rewardAlgorithm_unfair.html",  // 2nd iteration
+    "rewardAlgorithm_unfair.html",  // 3rd iteration
+    "rewardAlgorithm_fair.html",   // 4th iteration
+    "rewardAlgorithm_fair.html",   // 5th iteration
+    // Add the remaining URLs as needed, ensuring you have 25 total
+    // For example, here we'll alternate for simplicity
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html",
+    "rewardAlgorithm_fair.html",
+    "rewardAlgorithm_unfair.html"
+];
+
+function gaussianRandom(mean, sd) {
+            let u1 = Math.random();
+            let u2 = Math.random();
+            let z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+            return mean + z0 * sd;
+        }
+
+// Parse `iterationCount` from the URL, defaulting to 0
+let iterationCount = parseInt(urlParams.get('iteration')) || 1; // Start at 0 if no parameter is provided
+let redirectionTime = Math.max(0, gaussianRandom(3, 1.5)); // Mean 3 seconds, SD 1.5 seconds, ensure non-negative
+
+// Ensure this runs for 25 iterations (or however many you want)
+if (iterationCount < 26) {
+    setTimeout(() => {
+        // Get the URL based on the iterationCount from the predefined array
+        const redirectUrl = redirectUrls[iterationCount];
+
+        // Prepare query parameters (you can pass any additional parameters like score, lines, etc.)
+        window.location.href = `${redirectUrl}?iteration=${iterationCount}&loopCount=${loopCount}&score=${score}&lines=${lines}`;
+
+        // Increment iterationCount for the next redirection
+        //iterationCount++;
+
+    }, redirectionTime * 1000); // Redirect after 3 seconds (adjust time if needed)
+} else {
+    // If 25 iterations are reached, you can stop or do something else
+    console.log("Iteration limit reached.");
+}
+
+
+
+
+
+ // Generate a random redirection time with Gaussian distribution
+
+ //let redirectionTime = Math.max(0, gaussianRandom(3, 1.5)); // Mean 3 seconds, SD 1.5 seconds, ensure non-negative
+//console.log(`Redirecting in: ${redirectionTime.toFixed(2)} seconds`);
+
+
+
+
+
+</script>
+
+</body>
+</html>

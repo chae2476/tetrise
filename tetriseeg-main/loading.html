@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="trackPlayerInputs.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+        .loading-container {
+            text-align: center;
+        }
+        .loading-message {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-container">
+        <p class="loading-message">You are entering round <span id="round-number"></span> of the game...</p>
+        <p>Redirecting...</p>
+    </div>
+
+    <script>
+
+
+
+
+        // Get parameters from the URL (for the current round, score, and lines)
+        const urlParams = new URLSearchParams(window.location.search);
+        const loopCount = parseInt(urlParams.get('loopCount')) || 0;  // Default to 0 if not set
+        const score = urlParams.get('score') || 0;  // Default to 0 if not set
+        const lines = urlParams.get('lines') || 0;  // Default to 0 if not set
+
+
+        // Update the round number dynamically in the message
+document.getElementById("round-number").textContent = loopCount;
+
+
+        // Set a delay to simulate loading time and then redirect to tetris.html
+        setTimeout(() => {
+            // Redirect to the Tetris game page with the updated parameters
+            window.location.href = `tetris.html?loopCount=${loopCount}&score=${score}&lines=${lines}`;
+        }, 3000);  // 3 seconds delay (adjust as needed)
+    </script>
+
+</body>
+</html>

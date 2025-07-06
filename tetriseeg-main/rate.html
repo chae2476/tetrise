@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="trackPlayerInputs.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Likert Scale</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white;
+      flex-direction: column; /* Ensures that content aligns vertically */
+    }
+    .container {
+      text-align: center;
+      width: 100%;  /* Make container full width */
+      max-width: 600px;  /* Optional: control the width of the container */
+    }
+    .likert-scale {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; /* Ensure Likert scale takes full width */
+      margin-bottom: 20px;
+    }
+    .likert-scale input[type="radio"] {
+      display: none;
+    }
+    .likert-scale label {
+      position: relative;
+      display: inline-block;
+      padding: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .likert-scale input[type="radio"]:checked + label {
+      background-color: #4caf50;
+      color: white;
+    }
+    .likert-scale input[type="radio"]:not(:checked) + label:hover {
+      background-color: #ddd;
+    }
+    .likert-scale input[type="radio"]:checked + label:hover {
+      background-color: #45a049;
+    }
+    .likert-scale .rating-label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .rating-text {
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    .confirmation-message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+    }
+    h2 {
+      margin: 0;
+      padding-bottom: 10px;
+    }
+    #countdown {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+      position: absolute;
+      bottom: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #time-elapsed {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+    <div id="countdown">Next page loads in 5 seconds</div>
+    <!--<div id="time-elapsed">Elapsed Time: 0s</div>-->
+
+  <div class="container">
+    <h2>Please rate the algorithm (1: unfair and 5: fair):</h2>
+    <h2 style="color: blue;">Use the left and right arrow keys to make a selection, then press the spacebar to confirm</h2>
+
+    <!-- Likert Scale -->
+    <div class="likert-scale">
+      <div>
+        <input type="radio" id="unfair" name="rating" value="1">
+        <label for="unfair">1</label>
+      </div>
+      <div>
+        <input type="radio" id="somewhat-unfair" name="rating" value="2">
+        <label for="somewhat-unfair">2</label>
+      </div>
+      <div>
+        <input type="radio" id="neutral" name="rating" value="3" checked>
+        <label for="neutral">3</label>
+      </div>
+      <div>
+        <input type="radio" id="somewhat-fair" name="rating" value="4">
+        <label for="somewhat-fair">4</label>
+      </div>
+      <div>
+        <input type="radio" id="fair" name="rating" value="5">
+        <label for="fair">5</label>
+      </div>
+    </div>
+
+    <!-- Display Selected Rating -->
+    <div class="rating-text" id="rating-text">Selected: Neutral</div>
+    <!-- Display confirmation message -->
+    <div class="confirmation-message" id="confirmation-message"></div>
+  </div>
+
+  <script>
+    const ratingText = document.getElementById('rating-text');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    const radios = document.querySelectorAll('input[name="rating"]');
+    let currentIndex = 2; // Default to neutral (3)
+
+    // Function to update the selected rating text
+    function updateRatingText(value) {
+      switch (value) {
+        case '1':
+          ratingText.textContent = "Selected: Unfair";
+          break;
+        case '2':
+          ratingText.textContent = "Selected: Somewhat Unfair";
+          break;
+        case '3':
+          ratingText.textContent = "Selected: Neutral";
+          break;
+        case '4':
+          ratingText.textContent = "Selected: Somewhat Fair";
+          break;
+        case '5':
+          ratingText.textContent = "Selected: Fair";
+          break;
+      }
+    }
+
+    // Function to confirm the selection
+    function confirmSelection() {
+      confirmationMessage.textContent = 'Selection confirmed: ' + ratingText.textContent;
+      confirmationMessage.style.color = "red"; // Confirmation message color
+    }
+
+    // Keydown event to handle arrow and space bar input
+    //window.addEventListener("keydown", function(event) {
+      //if (event.key === "ArrowLeft" && currentIndex > 0) {
+        //currentIndex--; // Move left on the Likert scale
+        //radios[currentIndex].checked = true;
+        //updateRatingText(radios[currentIndex].value);
+      //} else if (event.key === "ArrowRight" && currentIndex < radios.length - 1) {
+        //currentIndex++; // Move right on the Likert scale
+        //radios[currentIndex].checked = true;
+        //updateRatingText(radios[currentIndex].value);
+      //} else if (event.key === " " && radios[currentIndex].checked) {
+        // Confirm the selection
+        //confirmSelection();
+      //} else if (event.key === " " && !radios[currentIndex].checked) {
+        // Prompt user to make a selection first
+        //ratingText.textContent = "Please make a selection first.";
+        //confirmationMessage.textContent = ''; // Clear the previous confirmation message
+      //}
+    //});
+
+    // Initialize with the default selected value (Neutral)
+    radios[currentIndex].checked = true;
+    updateRatingText(radios[currentIndex].value);
+
+
+    // Retrieve the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    let iterationCount = parseInt(urlParams.get('iteration')) || 1; // Default to 0 if not passed
+    let loopCount = parseInt(urlParams.get('loopCount')) || 1; // Keep track of loop count (how many times the 25 iterations have completed)
+    const score = urlParams.get('score');
+    const lines = urlParams.get('lines');
+    
+
+    // Start countdown and display the time elapsed
+    let countdownValue = 5;
+    const countdownElement = document.getElementById('countdown');
+
+    function startCountdown() {
+    const countdownElement = document.getElementById('countdown');  // Get the countdown element
+    let countdownValue = 5;  // Assuming the countdown starts at 3 seconds
+    
+    // Show the countdown div
+    countdownElement.style.display = 'block';
+    
+    // Update the countdown text initially
+    countdownElement.textContent = `Next page will load in: ${countdownValue} seconds`;
+
+    const countdownInterval = setInterval(() => {
+        if (countdownValue > 0) {
+            countdownValue--;
+            countdownElement.textContent = `Next page loads in: ${countdownValue} seconds`;
+        } else {
+            clearInterval(countdownInterval);
+            
+            // Check if 25 iterations have been completed (change >= x, x to 25)
+            if (iterationCount >= 1) {
+                // After 25 iterations, reset iteration count and go to the loading page before Tetris
+                //iterationCount = 0;  // Reset the iteration count
+                //if (loopCount > 2) {
+                //loopCount++;  // Increment loopCount starting from round 2
+            //}
+                //loopCount++; // Increment the loop count
+                
+                if (loopCount < 9) {
+                    // If we haven't reached 8 loops yet, redirect to the loading page
+                    setTimeout(() => {
+                        window.location.href = `loading.html?loopCount=${loopCount}&score=${score}&lines=${lines}`;
+                    }, 0000); // Redirect after 2 seconds
+                } else {
+                    // If we've reached 8 loops, end the process
+                    //alert('Game loop completed 8 times!');
+                    window.location.href = 'thankyou.html'; // Redirect to thank you page
+                }
+            } else {
+                // Continue the 25 iteration cycle, choose a random page
+                //window.location.href = `reminder.html?iteration=${iterationCount + 1}&loopCount=${loopCount}&score=${score}&lines=${lines}`; // Redirect to thank you page
+                window.location.href = `reminder.html?iteration=${iterationCount+1}&loopCount=${loopCount}&score=${score}&lines=${lines}`; // Redirect to thank you page
+                //const randomPage = Math.random() < 0.5 ? 'rewardAlgorithm_fair.html' : 'rewardAlgorithm_unfair.html';
+
+                // Redirect based on the random choice
+                setTimeout(() => {
+                    window.location.href = `${randomPage}?iteration=${iterationCount}&loopCount=${loopCount}&score=${score}&lines=${lines}`;
+                }, 0000); // Redirect after 0 seconds (immediately)
+            }
+        }
+    }, 1000);
+}
+
+
+    // Start the countdown
+    startCountdown();
+
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+   // Function to confirm the selection
+   function confirmSelection() {
+      confirmationMessage.textContent = 'Selection confirmed: ' + ratingText.textContent;
+      confirmationMessage.style.color = "red"; // Confirmation message color
+
+      // Save the rating selection with timestamp and page name to localStorage
+      let pageName = document.title; // or use a custom string like "Rating Page"
+      let currentTime = new Date().toLocaleString(); // Get current time
+
+      // Retrieve previous inputs from localStorage (if any)
+      let inputs = JSON.parse(localStorage.getItem('userInputs')) || [];
+
+      // Record the action and other data (rating, page, time)
+      inputs.push({
+        action: `Rating: ${ratingText.textContent}`,  // Store the rating text
+        page: pageName,
+        time: currentTime
+      });
+
+      // Store updated inputs array back to localStorage
+      localStorage.setItem('userInputs', JSON.stringify(inputs));
+    }
+
+    // Keydown event to handle arrow and space bar input
+    window.addEventListener("keydown", function(event) {
+      if (event.key === "ArrowLeft" && currentIndex > 0) {
+        currentIndex--; // Move left on the Likert scale
+        radios[currentIndex].checked = true;
+        updateRatingText(radios[currentIndex].value);
+      } else if (event.key === "ArrowRight" && currentIndex < radios.length - 1) {
+        currentIndex++; // Move right on the Likert scale
+        radios[currentIndex].checked = true;
+        updateRatingText(radios[currentIndex].value);
+      } else if (event.key === " " && radios[currentIndex].checked) {
+        // Confirm the selection
+        confirmSelection();
+      } else if (event.key === " " && !radios[currentIndex].checked) {
+        // Prompt user to make a selection first
+        ratingText.textContent = "Please make a selection first.";
+        confirmationMessage.textContent = ''; // Clear the previous confirmation message
+      }
+    });  
+
+       // Clear the stored game data in localStorage when the user closes the tab or window
+       window.addEventListener('beforeunload', function() {
+            // Optionally, remove specific items
+            localStorage.removeItem('inputList');
+            // Or clear all localStorage data
+            // localStorage.clear();
+        });
+
+</script>
+
+
+
+</body>
+</html>

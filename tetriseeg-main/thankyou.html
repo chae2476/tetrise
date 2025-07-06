@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="trackPlayerInputs.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+     body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+    body {
+            display: flex;
+            justify-content: center;  /* Center horizontally */
+            margin-top: 300px;
+            height: 100vh;            /* Full viewport height */
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+
+        }
+   
+    #countdown {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+      position: absolute;
+      bottom: 25%;  /* Position at the bottom of the page */
+      left: 50%;  /* Center it horizontally */
+      transform: translateX(-50%);  /* Adjust for exact horizontal centering */
+    }
+
+    #time-elapsed {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    #blue-text{
+        text-emphasis-color: blue;
+    }
+  </style>
+</head>
+
+<script src="timer.js" defer></script>
+<link rel="stylesheet" href="index.css">
+
+
+<body>
+
+  <!--<div id="countdown">Next page loads in 10 seconds</div>-->
+  <!--<div id="time-elapsed">Elapsed Time: 0s</div>-->
+
+  <div class="center-content">
+    <p><strong style="font-size: 30px;">Thank you for your participation!</strong></p>
+        
+  </div>
+ 
+
+  <script>
+    let countdownValue = 5;
+    let elapsedTime = 0;
+
+    const countdownElement = document.getElementById('countdown');
+    const timeElapsedElement = document.getElementById('time-elapsed');
+
+    // Countdown function
+    function startCountdown() {
+      const countdownInterval = setInterval(() => {
+        if (countdownValue > 0) {
+          countdownValue--;
+          countdownElement.textContent = `Next page loads in: ${countdownValue} seconds`;
+        } 
+      }, 1000);
+    }
+
+
+
+    // Start both countdown and timer
+    startCountdown();
+
+    
+
+    setTimeout(function() {
+        window.location.href = `data.html`;
+    }, 10000);  
+
+
+
+
+ 
+
+  </script>
+
+
+
+</body>
+</html>

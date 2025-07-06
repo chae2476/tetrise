@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="trackPlayerInputs.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris and EEG Study</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .begin-button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            cursor: pointer;
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .begin-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Tetris + EEG Study</h1>
+        <p>Click the button below to start the game.</p>
+        <button class="begin-button" id="beginButton">Begin</button>
+    </div>
+
+    <script>
+        // Handle "Begin" button click event
+        document.getElementById('beginButton').addEventListener('click', function() {
+            // Retrieve current game state if available (could be from localStorage, sessionStorage, or any other way you're tracking state)
+            let loopCount = 1;  // Set the initial loop count here, this could be dynamically fetched
+            let score = 0;      // Set the initial score here
+            let lines = 0;      // Set the initial lines here
+
+            // Redirect to the Tetris game page with dynamic values
+            //window.location.href = `tetris.html?loopCount=${loopCount}&score=${score}&lines=${lines}`;
+            window.location.href = `tetris.html?loopCount=${loopCount}`;
+            //window.location.href = `tetris.html`;
+        });
+    </script>
+</body>
+</html>
